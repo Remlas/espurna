@@ -19,9 +19,7 @@
 
 */
 
-#ifdef USE_CUSTOM_H
 #include "custom.h"
-#endif
 
 #include "version.h"
 #include "types.h"

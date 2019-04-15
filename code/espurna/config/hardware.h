@@ -3488,6 +3488,95 @@
     #define SSDP_SUPPORT        1
     #define RF_SUPPORT          1
 
+
+#elif defined(SUPLA_INCAN)
+
+    #undef	HOSTNAME
+    #define HOSTNAME                    "SUPLA-INCAN"
+
+    // Info
+    #define MANUFACTURER        "ESPABLO"
+    #define DEVICE              "INCAN"
+
+    // Buttons
+    #define BUTTON1_PIN         12
+    #define BUTTON1_MODE        BUTTON_SWITCH
+    #define BUTTON1_RELAY       1
+
+    #define BUTTON2_PIN         14
+    #define BUTTON2_MODE        BUTTON_SWITCH
+    #define BUTTON2_RELAY       2
+
+    // Relays
+    #define RELAY1_PIN          5
+    #define RELAY1_TYPE         RELAY_TYPE_NORMAL
+    #define RELAY2_PIN          13
+    #define RELAY2_TYPE         RELAY_TYPE_NORMAL
+
+    // LEDs
+    #define LED1_PIN            2
+    #define LED1_PIN_INVERSE    0
+    #undef LED1_MODE
+    #define LED1_MODE                   LED_MODE_RELAY
+
+#elif defined(SONOFF_LAMPKA)
+
+    #undef	HOSTNAME
+    #define HOSTNAME                    "SONOFF-LAMPKA"
+
+    // Info
+    #define MANUFACTURER        "ITEAD"
+    #define DEVICE              "SONOFF_BASIC_DHT"
+
+    // Buttons
+    #define BUTTON1_PIN         0
+    #define BUTTON1_MODE        BUTTON_SWITCH | BUTTON_SET_PULLUP | BUTTON_DEFAULT_HIGH
+    #define BUTTON1_RELAY       1
+
+    // Relays
+    #define RELAY1_PIN          12
+    #define RELAY1_TYPE         RELAY_TYPE_NORMAL
+
+    // LEDs
+    #define LED1_PIN            13
+    #define LED1_PIN_INVERSE    1
+
+    // DHT 22
+    #ifndef DHT_SUPPORT
+    #define DHT_SUPPORT         1
+    #endif
+    #define DHT_PIN             14
+
+#elif defined(MAGICHOME_LED_CONTROLLER_MOD)
+
+    // Info
+    #define MANUFACTURER        "MAGICHOME"
+    #define DEVICE              "LED_CONTROLLER_MODED"
+    #define RELAY_PROVIDER      RELAY_PROVIDER_LIGHT
+    #define LIGHT_PROVIDER      LIGHT_PROVIDER_DIMMER
+    #define DUMMY_RELAY_COUNT   1
+
+    // LEDs
+    #define LED1_PIN            2
+    #define LED1_PIN_INVERSE    1
+
+    // Light
+    #define LIGHT_CHANNELS      3
+    #define LIGHT_CH1_PIN       5       // RED
+    #define LIGHT_CH2_PIN       15      // GREEN
+    #define LIGHT_CH3_PIN       13      // BLUE
+
+    #define LIGHT_CH1_INVERSE   0
+    #define LIGHT_CH2_INVERSE   0
+    #define LIGHT_CH3_INVERSE   0
+
+    // avaible pins: 5,15,13
+
+    // IR
+    #define IR_SUPPORT          1
+    #define IR_RX_PIN           4
+    #define IR_BUTTON_SET       1
+
 #endif
 
 // -----------------------------------------------------------------------------
