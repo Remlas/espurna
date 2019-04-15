@@ -2,7 +2,7 @@
 
 SYSTEM MODULE
 
-Copyright (C) 2018 by Xose Pérez <xose dot perez at gmail dot com>
+Copyright (C) 2019 by Xose Pérez <xose dot perez at gmail dot com>
 
 */
 
@@ -11,6 +11,7 @@ Copyright (C) 2018 by Xose Pérez <xose dot perez at gmail dot com>
 // -----------------------------------------------------------------------------
 
 unsigned long _loop_delay = 0;
+
 bool _system_send_heartbeat = false;
 unsigned char _heartbeat_mode = HEARTBEAT_MODE;
 unsigned long _heartbeat_interval = HEARTBEAT_INTERVAL;
@@ -76,7 +77,6 @@ unsigned long systemLoopDelay() {
     return _loop_delay;
 }
 
-
 unsigned long systemLoadAverage() {
     return _load_average;
 }
@@ -85,6 +85,12 @@ void _systemSetupHeartbeat() {
     _heartbeat_mode = getSetting("hbMode", HEARTBEAT_MODE).toInt();
     _heartbeat_interval = getSetting("hbInterval", HEARTBEAT_INTERVAL).toInt();
 }
+
+#if WEB_SUPPORT
+    bool _systemWebSocketOnReceive(const char * key, JsonVariant& value) {
+        return (strncmp(key, "hb", 2) == 0);
+    }
+#endif
 
 void systemLoop() {
 
@@ -150,8 +156,7 @@ void systemLoop() {
     // -------------------------------------------------------------------------
     // Power saving delay
     // -------------------------------------------------------------------------
-
-    delay(_loop_delay);
+    if (_loop_delay) delay(_loop_delay);
 
 }
 
@@ -165,7 +170,7 @@ void _systemSetupSpecificHardware() {
 
     // These devices use the hardware UART
     // to communicate to secondary microcontrollers
-    #if defined(ITEAD_SONOFF_RFBRIDGE) || defined(ITEAD_SONOFF_DUAL) || (RELAY_PROVIDER == RELAY_PROVIDER_STM)
+    #if defined(ITEAD_SONOFF_RFBRIDGE) || (RELAY_PROVIDER == RELAY_PROVIDER_DUAL) || (RELAY_PROVIDER == RELAY_PROVIDER_STM)
         Serial.begin(SERIAL_BAUDRATE);
     #endif
 
@@ -180,6 +185,10 @@ void systemSetup() {
     // Question system stability
     #if SYSTEM_CHECK_ENABLED
         systemCheck(false);
+    #endif
+
+    #if WEB_SUPPORT
+        wsOnReceiveRegister(_systemWebSocketOnReceive);
     #endif
 
     // Init device-specific hardware
